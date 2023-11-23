@@ -49,7 +49,7 @@ st.markdown(f"""
 st.markdown("""
     <h1 style="direction: rtl; text-align: center; font-size: 64px; font-weight: bold; 
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);  color: rgb(45, 47, 121); font-family: 'Arial', sans-serif;">
-        התאמות מעסיקים
+        דשבורד התאמות מעסיקים
     </h1>""", unsafe_allow_html=True)
 
 
@@ -67,7 +67,7 @@ st.write("""
                   color: rgb(45, 47, 121);
                   font-family: 'Arial', sans-serif;
                   margin: 0;">
-            מפות אלו מאפשרות לקבל ראייה גלובלית של מצב ההתאמות למעסיקים.
+            הדשבורד ההוא מאפשר לנו לקבל ראייה כוללת  ולעקוב אחרי ההתפתחות ההתאמות מעסיקים . זה כולל רק מעסיקים שהם עדיין במצב של "עסק חי" ולא כולל עסקים קטנים (פחות מ-5 עובדים).
         </p>
     </div>
 </div>
