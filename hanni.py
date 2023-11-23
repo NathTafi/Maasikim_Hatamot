@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import warnings
+import base64
 import folium
 from itertools import cycle
 from Levenshtein import distance
@@ -16,6 +17,35 @@ from streamlit_folium import folium_static
 warnings.filterwarnings('ignore')
 
 st.set_page_config(page_title = 'התאמות מעסיקים', layout = 'wide', page_icon = '💼')
+@st.cache_data()
+def get_img_as_base64(file):
+    with open(file, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+img = get_img_as_base64("walpaper2.jpg")
+
+st.markdown(f"""
+    <style>
+        [data-testid="stAppViewContainer"] > .main {{
+            background-image: url("data:image/jpeg;base64,{img}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;  /* Ici, nous fixons l'image */
+            background-blend-mode: overlay;
+            background-color: rgba(255,255,255,0.7);
+        }}
+        [data-testid="stSidebar"] > div:first-child {{
+            background-image: url("data:image/jpeg;base64,{img}");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+    </style>
+    """,
+    unsafe_allow_html=True)
+
 st.markdown("""
     <h1 style="direction: rtl; text-align: center; font-size: 64px; font-weight: bold; 
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);  color: rgb(45, 47, 121); font-family: 'Arial', sans-serif;">
