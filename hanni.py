@@ -32,8 +32,8 @@ st.write("""
 
 
 
-yeshuv = pd.read_excel(r'C:\Users\nataniz\Desktop\Maasikim\Cities_Districts.xlsx')
-map_mahoz = pd.read_excel(r'C:\Users\nataniz\Desktop\Maasikim\Maasikim_total_hanni.xlsx')
+yeshuv = pd.read_excel('Cities_Districts.xlsx')
+map_mahoz = pd.read_excel('Maasikim_total_hanni.xlsx')
 #map_mahoz = harmonize_city_names(map_mahoz, yeshuv, city_col1='CityName', city_col2='CityName')
 map_mahoz['Difference'] = map_mahoz.Total_Employer_Number - map_mahoz.Employer_Number_metouam
 
@@ -46,7 +46,7 @@ mahoz = map_mahoz_final.groupby('RegionNameLamas').sum()
 mahoz['Percent_mahoz_OfMetouham'] = round((mahoz.Employer_Number_metouam / mahoz.Total_Employer_Number) * 100, 2)
 mahoz = mahoz.sort_values(by = 'Percent_mahoz_OfMetouham', ascending = False)
 
-geo = gpd.read_file(r'C:\Users\nataniz\Desktop\Maasikim\Polygons_Districts/ch107xc0728.shp').drop(['id_0', 'iso', 'name_0', 'id_1', 'hasc_1', 'ccn_1', 'cca_1',
+geo = gpd.read_file('Polygons_Districts/ch107xc0728.shp').drop(['id_0', 'iso', 'name_0', 'id_1', 'hasc_1', 'ccn_1', 'cca_1',
        'type_1', 'engtype_1', 'nl_name_1', 'varname_1'], axis = 1)
 geo = geo.rename(columns = {'name_1' : 'Mahoz_Name'})
 
@@ -155,7 +155,7 @@ yeshuv_percent['Percent_cities'] = round((yeshuv_percent.Employer_Number_metouam
 
 
 # import shp polygon cities
-shp_file = 'C:\\Users\\nataniz\\Desktop\\Map2\\Polygons\\statistical_areas_2022.shp'
+shp_file = 'Polygons/statistical_areas_2022.shp'
 data = gpd.read_file(shp_file)
 data = data[['SHEM_YISHU', 'YISHUV_STA','SHAPE_Leng', 'SHAPE_Area', 'geometry']]
 data = data.rename(columns = {'YISHUV_STA' : 'CityID_Area'})
