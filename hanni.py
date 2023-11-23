@@ -15,20 +15,33 @@ from shapely.geometry import MultiPolygon
 from streamlit_folium import folium_static 
 warnings.filterwarnings('ignore')
 
-st.set_page_config(page_title = 'Hatamot', layout = 'wide')
+st.set_page_config(page_title = 'התאמות מעסיקים', layout = 'wide', page_icon = '💼')
 st.markdown("""
     <h1 style="direction: rtl; text-align: center; font-size: 64px; font-weight: bold; 
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); color: #3498db; font-family: 'Arial', sans-serif;">
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);  color: rgb(45, 47, 121); font-family: 'Arial', sans-serif;">
         התאמות מעסיקים
     </h1>""", unsafe_allow_html=True)
 
 
 st.write("""
-<div style="border: 2px solid #3498db; border-radius: 5px; padding: 10px;">
-    <p style="direction: rtl; text-align: center; font-weight: bold; font-size: 26px;">מפות אלו מאפשרות לקבל ראייה גלובלית של מצב ההתאמות למעסיקים.</p>
+<div style="display: flex; justify-content: center;">
+    <div style="border: 3px solid rgb(45, 47, 121); 
+                border-radius: 15px; 
+                padding: 15px 25px; 
+                display: inline-block; 
+                text-align: center; 
+                background-color: white;">
+        <p style="direction: rtl; 
+                  font-weight: bold; 
+                  font-size: 26px;
+                  color: rgb(45, 47, 121);
+                  font-family: 'Arial', sans-serif;
+                  margin: 0;">
+            מפות אלו מאפשרות לקבל ראייה גלובלית של מצב ההתאמות למעסיקים.
+        </p>
+    </div>
 </div>
 """, unsafe_allow_html=True)
-
 
 
 
@@ -221,27 +234,101 @@ col1, col2 = st.columns(2)
 # Ajoutez du contenu à la première colonne
 with col1:
     st.markdown("""
-    <div style="direction: rtl; text-align: center; background-color: #3498db; padding: 10px; 
-    border-radius: 5px; color: white; font-weight: bold; font-size: 28px; margin-top: 20px; margin-bottom: 15px">
+    <div style="direction: rtl; text-align: center; background-color: rgb(235, 136, 17); padding: 10px; 
+    border-radius: 5px; color: white; font-weight: bold; font-size: 28px; margin-top: 20px; margin-bottom: 30px ; font-family: 'Arial', sans-serif;">
         אחוזי התאמות מעסיקים לפי מחוז
     </div>
     """, unsafe_allow_html=True)
     carte_markers._parent.selector = '#map1'
     folium_static(carte_markers, width=870, height=600)
 
-# Ajoutez une ligne de séparation entre les colonnes
-st.write('<hr style="border-top: 2px solid #3498db;">', unsafe_allow_html=True)
 
 # Ajoutez du contenu à la deuxième colonne
 with col2:
     st.markdown("""
-    <div style="direction: rtl; text-align: center; background-color: #3498db; padding: 10px; 
-    border-radius: 5px; color: white; font-weight: bold; font-size: 28px; margin-top: 20px ; margin-bottom: 15px">
+    <div style="direction: rtl; text-align: center; background-color: rgb(235, 136, 17); padding: 10px; 
+    border-radius: 5px; color: white; font-weight: bold; font-size: 28px; margin-top: 20px ; margin-bottom: 30px; font-family: 'Arial', sans-serif;">
         אחוזי התאמות מעסיקים לפי ישוב
     </div>
     """, unsafe_allow_html=True)
     carte_villes_par_region._parent.selector = '#map2'
     folium_static(carte_villes_par_region, width=870, height=600)
+
+
+
+#Barre de progression---------------------------------------------------------------------------------------------------------------
+def create_gradient_progress_bar(label, progress, start_color, end_color):
+    return f"""
+    <div style="display: flex; align-items: center; margin-bottom: 20px; font-family: Arial;">
+        <div style="width: 120px; font-size: 20px; color: rgb(45, 47, 121); text-shadow: 1px 1px 2px grey;"><strong>{label}</strong></div>
+        <div style="flex-grow: 1; margin-left: 20px; height: 25px; border-radius: 12px; background: linear-gradient(to right, {start_color}, {end_color});">
+            <div style="height: 100%; width: {progress}%; background-color: rgba(255, 255, 255, 0.5); border-radius: 12px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);">
+                <span style="color: white; font-weight: bold;">{progress}%</span>
+            </div>
+        </div>
+    </div>
+    """
+
+
+yaad = round((mahoz.Employer_Number_metouam.sum() / mahoz.Total_Employer_Number.sum()) * 100,2)
+devoirs = [("יעד מעסיקים", yaad)]
+start_color = "#2d2f79"  # Bleu foncé (R=45 G=47 B=121)
+end_color = "#6c90a1"    # Bleu clair (R=108 G=144 B=161)
+for label, progress in devoirs:
+    st.markdown(create_gradient_progress_bar(label, progress, start_color, end_color), unsafe_allow_html=True)
+    
+# Ajoutez une ligne de séparation entre les colonnes
+st.write('<hr style="border-top: 4px solid  rgb(235, 136, 17);">', unsafe_allow_html=True)
+
+
+
+# Largest, Smallest cities---------------------------------------------------------------------------------------------------------------
+def create_data_card(city, percent, start_color, end_color):
+    return f"""
+    <div style="margin: 5px auto; padding: 10px; border-radius: 10px; background: linear-gradient(to right, {start_color}, {end_color}); box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); width: 250px; text-align: center;">
+        <h3 style="font-family: Arial, sans-serif; color: white; font-size: 18px;">{city}</h3>
+        <div style="font-family: Arial, sans-serif; color: white; font-size: 22px;">
+            <strong>{percent}%</strong>
+        </div>
+    </div>
+    """
+
+# Exemple de couleurs que vous avez fournies
+start_color_largest = "#76b852"  # Vert
+end_color_largest = "#6dd5ed"    # Bleu
+
+start_color_smallest = "#ff9a8b"  # Orange
+end_color_smallest = "#ff7f0e"    # Orange plus foncé
+
+shadow_color_largest = "rgba(118, 184, 82, 0.75)"  # Ombre verte plus foncée
+shadow_color_smallest = "rgba(255, 154, 139, 0.75)" # Ombre orange plus foncée
+
+# Modification des styles de titre pour inclure une ombre plus prononcée
+title_style_largest = f"color: #fff; text-shadow: 4px 4px 8px {shadow_color_largest}; text-align: center; font-size: 42px;"
+title_style_smallest = f"color: #fff; text-shadow: 4px 4px 8px {shadow_color_smallest}; text-align: center; font-size: 42px;"
+col1, col2 = st.columns(2)
+
+with col1:
+    st.markdown(f"<h2 style='{title_style_largest}'>ההתאמות הגבוהות</h2>", unsafe_allow_html=True)
+
+with col2:
+    st.markdown(f"<h2 style='{title_style_smallest}'>ההתאמות הנמוכות</h2>", unsafe_allow_html=True)
+
+
+# Affichage du top 3 des villes avec le meilleur pourcentage
+with col1:
+    indices_largest = fusion['Percent_cities'].nlargest(3).index
+    top_cities_largest = fusion.loc[indices_largest]
+    for city, row in top_cities_largest.iterrows():
+        st.markdown(create_data_card(row['CityName'], row['Percent_cities'], start_color_largest, end_color_largest), unsafe_allow_html=True)
+
+# Affichage du top 3 des villes avec le plus faible pourcentage
+with col2:
+    indices_smallest = fusion['Percent_cities'].nsmallest(3).index
+    top_cities_smallest = fusion.loc[indices_smallest]
+    for city, row in top_cities_smallest.iterrows():
+        st.markdown(create_data_card(row['CityName'], row['Percent_cities'], start_color_smallest, end_color_smallest), unsafe_allow_html=True)
+
 
     
 
