@@ -1,0 +1,12 @@
+streamlit ==  1.28.0
+pandas == 1.5.3
+numpy
+folium
+seaborn
+matplotlib
+colorama
+IPython
+openpyxl
+python-Levenshtein
+geopandas
+streamlit-folium
