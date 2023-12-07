@@ -287,28 +287,32 @@ with col2:
 
 
 #Barre de progression---------------------------------------------------------------------------------------------------------------
-def create_gradient_progress_bar(label, progress, start_color, end_color):
+def create_gradient_progress_bar(label_before, label_now, previous_progress, current_progress, start_color, end_color):
     return f"""
     <div style="display: flex; align-items: center; margin-bottom: 20px; font-family: Arial;">
-        <div style="width: 120px; font-size: 20px; color: rgb(45, 47, 121); text-shadow: 1px 1px 2px grey;"><strong>{label}</strong></div>
+        <div style="width: 120px; font-size: 20px; color: rgb(45, 47, 121); text-shadow: 1px 1px 2px grey;"><strong>{label_before}</strong></div>
         <div style="flex-grow: 1; margin-left: 20px; height: 25px; border-radius: 12px; background: linear-gradient(to right, {start_color}, {end_color});">
-            <div style="height: 100%; width: {progress}%; background-color: rgba(255, 255, 255, 0.5); border-radius: 12px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);">
-                <span style="color: white; font-weight: bold;">{progress}%</span>
+            <div style="height: 100%; width: {previous_progress}%; background-color: rgba(255, 255, 255, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                <span style="color: white; font-weight: bold;">{previous_progress}%</span>
+            </div>
+        </div>
+        <div style="width: 120px; font-size: 20px; color: rgb(45, 47, 121); text-shadow: 1px 1px 2px grey; margin-left: 10px;"><strong>{label_now}</strong></div>
+        <div style="flex-grow: 1; margin-left: 10px; height: 25px; border-radius: 12px; background: linear-gradient(to right, {start_color}, {end_color});">
+            <div style="height: 100%; width: {current_progress}%; background-color: rgba(255, 255, 255, 0.5); border-radius: 12px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                <span style="color: white; font-weight: bold;">{current_progress}%</span>
             </div>
         </div>
     </div>
     """
 
-
-yaad = round((mahoz.Employer_Number_metouam.sum() / mahoz.Total_Employer_Number.sum()) * 100,2)
-devoirs = [("יעד מעסיקים", yaad)]
+# Exemple d'utilisation
+yaad_current = round((mahoz.Employer_Number_metouam.sum() / mahoz.Total_Employer_Number.sum()) * 100,2)
+yaad_previous = 54.1    # -------------------------------------------------------------------------------------------------prendre le derneir pourcentage en date
+devoirs = [("יעד מעסיקים אחרי העידכון", "יעד מעסיקים לפני העידכון האחרון", yaad_previous, yaad_current)]
 start_color = "#2d2f79"  # Bleu foncé (R=45 G=47 B=121)
 end_color = "#6c90a1"    # Bleu clair (R=108 G=144 B=161)
-for label, progress in devoirs:
-    st.markdown(create_gradient_progress_bar(label, progress, start_color, end_color), unsafe_allow_html=True)
-    
-# Ajoutez une ligne de séparation entre les colonnes
-st.write('<hr style="border-top: 4px solid  rgb(235, 136, 17);">', unsafe_allow_html=True)
+for label_before, label_now, previous_progress, current_progress in devoirs:
+    st.markdown(create_gradient_progress_bar(label_before, label_now, previous_progress, current_progress, start_color, end_color), unsafe_allow_html=True)
 
 
 
