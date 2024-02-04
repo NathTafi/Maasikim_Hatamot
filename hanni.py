@@ -307,7 +307,7 @@ def create_gradient_progress_bar(label_before, label_now, previous_progress, cur
 
 # Exemple d'utilisation
 yaad_current = round((mahoz.Employer_Number_metouam.sum() / mahoz.Total_Employer_Number.sum()) * 100,2)
-yaad_previous = 54.01    # -------------------------------------------------------------------------------------------------prendre le derneir pourcentage en date
+yaad_previous = 51.9    # -------------------------------------------------------------------------------------------------prendre le derneir pourcentage en date
 devoirs = [("יעד מעסיקים לפני העידכון האחרון", "יעד מעסיקים אחרי העידכון", yaad_previous, yaad_current)]
 start_color = "#2d2f79"  # Bleu foncé (R=45 G=47 B=121)
 end_color = "#6c90a1"    # Bleu clair (R=108 G=144 B=161)
